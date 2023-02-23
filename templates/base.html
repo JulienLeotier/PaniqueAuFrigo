@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panique au frigo</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'logo/favicon-32x32.png' %}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'logo/favicon-16x16.png' %}"/>
+    <link rel="manifest" href="{% static 'logo/site.webmanifest' %}"/>
+    <link rel="mask-icon" href="{% static 'logo/safari-pinned-tab.svg' %}" color="#5bbad5"/>
+    <link rel="shortcut icon" href="{% static 'logo/favicon.ico' %}"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        @font-face {
+            font-family: lazy_dog;
+            src: url({% static 'fonts/lazy_dog.ttf'%}) format('truetype');
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+<div class="root">
+    <div class="col s12 m12 l12">
+        <a href="/"><img src="{% static 'logo/logo.png' %}" alt="logo" class="center logo"></a>
+    </div>
+
+</div>
+{% block content %}
+{% endblock %}
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>

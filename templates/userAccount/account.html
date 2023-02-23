@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <a href="{% url 'gulty' %}" class="btn btn-outline-info center">Fouilles</a>
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-image">
+                    <img src="/media/{{ perso.image }}" class="large-image" alt="photo-profile">
+                    <span class="card-title lazy-dog font-black">{{ perso.name }}</span>
+                </div>
+                <div class="card-content">
+                    <p>{{ perso.description }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#secret" class="modal-trigger">Votre secret</a>
+                    <a href="#secretFind" class="modal-trigger">Les secrets trouvé</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <ul class="tabs">
+                <li class="tab col s6"><a href="#perso" class="active">Tes relations</a></li>
+                <li class="tab col s6"><a href="#preuves">Ce que tu sais</a></li>
+            </ul>
+        </div>
+        <div id="perso" class="col s12 m6">
+            <ul class="collection">
+                {% for relation in perso.relations.all %}
+                    <li class="collection-item avatar">
+                        <img src="/media/{{ relation.perso.image }}" alt="" class="circle">
+                        <span class="title">{{ relation.perso.name }}</span>
+                        <p>{{ relation.description }}</p>
+                        <a href="#modal{{ relation.perso.id }}" class="secondary-content modal-trigger"><i
+                                class="material-icons">send</i></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="preuves" class="col s12 m6">
+            <ul class="collection">
+                {% for secret in perso.known_secrets.all %}
+                    <li class="collection-item avatar">
+                        <img src="/media/{{ secret.perso.image }}" alt="" class="circle">
+                        <span class="title">{{ secret.perso.name }}</span>
+                        <p>{{ secret.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!-- Modal généré pour voir les profiles -->
+    <div id="generator"></div>
+    <!-- Modal les secrets du joueurs -->
+    <div id="secret" class="modal">
+        <div class="modal-content">
+            <ul class="collection">
+                {% for secret in perso.secrets.all %}
+                    <a href="/media/{{ secret.image }}">
+                        <li class="collection-item avatar">
+                            <img src="/media/{{ secret.image }}" alt="" class="circle">
+                            <p>{{ secret.description }}</p>
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+            <div class="modal-footer card-action">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Rester discret</a>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Secret trouvé -->
+    <div id="secretFind" class="modal">
+        <div class="modal-content">
+            <div class="row">
+                {% for secret in perso.saveDocument.secrets.all %}
+                    <div class="col s12 m4">
+                        <a href="/media/{{ secret.image }}">
+                            <p>{{ secret.perso.name }}</p>
+                            <img src="/media/{{ secret.image }}" width="200px" alt="" class="circle">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer card-action">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Retour</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        {% for caractere in other_perso %}
+            let code{{ caractere.id }} = '<div id="modal{{ caractere.id }}" class="modal">\
+                <div class="modal-content card">\
+                <div class="card-image">\
+                <img src="/media/{{ caractere.image }}" width="100%"alt="img-other" /> \
+                <h4 class="card-title">{{ caractere.name }}</h4>\
+                </div>\
+                <div>\
+                <p>{{ caractere.description }}</p>\
+                </div>\
+                </div>\
+                <div class="modal-footer card-action">\
+                <form action="/askTalkPerso/{{ caractere.id }}" method="post" >\
+                {% csrf_token %}\
+                {% if save_ask.compte >= 4 %}\
+                <p>Vous avez atteint le cota de fouille!\
+                {% else %}\
+                <button class="btn btn-outline-info" type="submit">Faire parler</button>\
+                {% endif %}\
+                </form>\
+                </div>\
+                </div>\
+                ';
+            document.getElementById('generator').innerHTML += code{{ caractere.id }}
+        {% endfor %}
+    </script>
+{% endblock %}

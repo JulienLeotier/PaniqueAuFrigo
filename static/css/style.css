@@ -1,0 +1,43 @@
+/* Path: static/css/style.css */
+h1, h2, h3, h4, h5, h6 {
+    font-family: lazy_dog;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+}
+
+.space {
+    margin-top: 50px;
+}
+
+.lazy-dog {
+    font-family: lazy_dog !important;
+}
+
+@media screen and (min-width: 990px) {
+    .large-image {
+        height: 250px;
+        width: auto;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50% !important;
+    }
+}
+
+.font-black {
+    color: black !important;
+}
+
+.min-heigth-augmented {
+    min-height: 100px !important;
+}

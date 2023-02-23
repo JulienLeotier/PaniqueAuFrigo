@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<!--Register-->
+<div class="container">
+	<h1>S'inscrire</h1>
+	<form method="POST">
+		{% csrf_token %}
+		{{ register_form }}
+        <div class="space"></div>
+        <div class="row">
+            <div class="col s12">
+                <button class="btn btn-primary" type="submit">S'inscrire</button>
+            </div>
+        </div>
+	</form>
+	<p class="text-center">Si vous avez déjà un compte <a href="/login">login</a></p>
+</div>
+
+{% endblock %}
