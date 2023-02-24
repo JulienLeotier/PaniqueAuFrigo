@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "perso",
     "front",
-    "crispy_forms"
+    "crispy_forms",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "PaniqueAuFrigo.wsgi.application"
+ASGI_APPLICATION = "PaniqueAuFrigo.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -77,7 +79,7 @@ WSGI_APPLICATION = "PaniqueAuFrigo.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": str(BASE_DIR / "db.sqlite3"),
     }
 }
 
@@ -117,7 +119,6 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static-root')
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/var/www/static/',
 ]
 
 # Default primary key field type
@@ -129,3 +130,8 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'media')
 )
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

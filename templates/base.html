@@ -30,14 +30,170 @@
 
 </head>
 <body>
-<div class="root">
-    <div class="col s12 m12 l12">
-        <a href="/"><img src="{% static 'logo/logo.png' %}" alt="logo" class="center logo"></a>
+<nav>
+    <div class="nav-wrapper">
+        <a href="{% url 'base' %}" class="brand-logo">Panique</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            {% if request.user and perso %}
+                <li><a href="{% url 'all' %}">Les personnages</a></li>
+                <li><a href="{% url 'account' %}">Votre compte</a></li>
+                <li><a href="{% url 'guilty' %}">Les clash en cours</a></li>
+                <li><a href="{% url 'clash' %}">Vos demandes</a></li>
+                <li><a href="{% url 'history' %}">Historique</a></li>
+                <li><a href="{% url 'logout' %}">Déconnexion</a></li>
+            {% elif request.user and perso == None %}
+                <li><a href="{% url 'login' %}">Déconnexion</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Connexion</a></li>
+            {% endif %}
+        </ul>
     </div>
+</nav>
 
-</div>
+<ul class="sidenav" id="mobile-demo">
+    {% if request.user and perso %}
+        <li><a href="{% url 'all' %}">Les personnages</a></li>
+        <li><a href="{% url 'account' %}">Votre compte</a></li>
+        <li><a href="{% url 'guilty' %}">Les clash en cours</a></li>
+        <li><a href="{% url 'clash' %}">Vos demandes</a></li>
+        <li><a href="{% url 'history' %}">Historique</a></li>
+        <li><a href="{% url 'logout' %}">Déconnexion</a></li>
+    {% else %}
+        <li><a href="{% url 'login' %}">Connexion</a></li>
+    {% endif %}
+</ul>
+{% url 'base' as the_url %}
+{% if request.get_full_path == the_url and request.user and perso %}
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card red darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Histoire</span>
+                    <p>Vous êtes des aliments vivant dans la cuisine des z'amis de Bordeaux. Vous êtes un peu
+                        inquiets
+                        car ça fait deux jours que le resto est fermé alors qu'on est en pleine semaine. Il semblerait
+                        que 10
+                        clients soient tombés malades et hospitalisés à cause d'une intoxication alimentaire. Alors que
+                        vous
+                        commencez à vous poser des questions, la porte du frigo s'ouvre et la tête renfrognée d'un
+                        inspecteur
+                        de l'hygiène apparaît, cotons-tiges et lamelles de prélèvement à la main. Il commence à faire
+                        ses
+                        analyses en grommelant, afin d'avoir des indices sur le/la coupable de l'intoxication. S'il ne
+                        trouve pas
+                        qui c'est, de toute façon, il vous jettera tous à la poubelle.
+                        Vous disposez de deux heures seulement pour trouver le/la coupable et lui injecter un shoot de
+                        moisissures bien visibles afin qu'il/elle devienne tout(e) vert/bleu et soit identifié(e) par
+                        l'inspecteur
+                        sanitaire pour être analysé(e) et que vous autres soyez disculpés ! La moisissure met un peu de
+                        temps
+                        pour agir : celui qui sera piqué pourra continuer d'enquêter, mais pourrira inévitablement
+                        lorsque
+                        l'inspecteur reviendra à la fin du jeu.
+                        Le jeu se déroule donc à huis-clos, vous êtes tous dans le même bâtiment : la cuisine. Dans les
+                        faits,
+                        vous pouvez vous isoler pour discuter à l'écart du groupe, ou utiliser plusieurs pièces.</p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'account' %}">Voir mon personnage</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="card yellow darken-1">
+                <div class="card-content black-text">
+                    <span class="card-title">Vos actions</span>
+                    <p>Soyez fair-play. Si votre personnage est un menteur, mentez, mais ne cachez pas une information
+                        qu'un autre personnage a découvert grâce aux indices.
+                        Vous pouvez fouiller un personnage. Pour cela, il faut être 2 : un qui le tient, et un qui le
+                        fouille. Vous
+                        devez lancer un clash dans l'appli et attendre qu'un autre personnage vous rejoigne: les 2 qui
+                        fouillent + la victime. Dans votre fiche personnage dans les secrets trouvé vous aurez les infos
+                        subtilisé. Chaque fois que vous fouillez quelqu'un, vous perdez une action et
+                        vous n'avez que 4 points d'action.
+                        Vous ne pouvez pas assommer ou tuer un personnage : un aliment, ça ne meurt pas, ça pourrit. En
+                        revanche, les coups de gueule sont autorisés ! N'ayez pas peur des jeux de mots culinaires.
+                        Si vous avez un doute ou une question, n'hésitez pas à consulter l'inspecteur sanitaire, seul ou
+                        à
+                        plusieurs.</p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'guilty' %}">Voir les clashs en cours</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% elif request.get_full_path == the_url and request.user and perso is None %}
+    <div class="row">
+        <h4>Liste des personnages</h4>
+        <div class="col s12 m6">
+            {% for guilty in all_perso %}
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <img src="/media/{{ guilty.image }}" alt="">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <p>{{ guilty.description_breve }}</p>
+                        </div>
+                        <div class="card-action">
+                            <form method="post" action="/select_perso/{{ guilty.id }}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-info" type="submit" style="height: 100%">Selectionner le
+                                    personnage
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
 {% block content %}
 {% endblock %}
-    <script src="{% static 'js/index.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.modal');
+        M.Modal.init(elems, {});
+        elems = document.querySelectorAll('.tabs');
+        M.Tabs.init(elems, {});
+        elems = document.querySelectorAll('.sidenav');
+        M.Sidenav.init(elems, {});
+        console.log('toto')
+    });
+</script>
+<script>
+    let notificationSocket = null;
+
+    function connect(url) {
+        notificationSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + url
+        );
+        notificationSocket.onopen = function (e) {
+            console.log(`Notification ${url} socket opened`);
+        };
+
+        notificationSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+            M.toast({html: data.message, classes: 'rounded'});
+        };
+
+        notificationSocket.onclose = function (e) {
+            console.error('Notification socket closed unexpectedly');
+        };
+
+    }
+    {% if request.user and perso %}
+    connect('/ws/notifications/{{ perso.slug_name }}')
+    {% endif %}
+
+</script>
 </body>
 </html>

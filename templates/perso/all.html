@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <h4>Liste des personnages</h4>
+        <p>Vous avez fait {{ save_ask.compte }} clash sur 4 fois</p>
+
+        <div class="col s12 m4">
+            {% for guilty in persos %}
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <img src="/media/{{ guilty.image }}" alt="">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <p>{{ guilty.description_breve }}</p>
+                        </div>
+                        <div class="card-action">
+                            <form method="post" action="/askTalkPerso/{{ guilty.id }}">
+                                {% csrf_token %}
+                                {% if save_ask.compte >= 4 %}
+                                    <p>Vous avez fouillé {{ save_ask.compte }} fois sur 4 fois</p>
+                                    <p>Désolé mais vous avez dépassé le cota de clash</p>
+                                {% else %}
+                                    <button class="btn btn-outline-info" type="submit" style="height: 100%">Provoquer un clash</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

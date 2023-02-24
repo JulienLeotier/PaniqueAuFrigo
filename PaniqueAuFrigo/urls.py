@@ -26,9 +26,19 @@ urlpatterns = [
     path("login/", views.login_request, name="login"),
     path("register/", views.register_request, name="register"),
     path("account/", views.account, name="account"),
-    path("guilty/", views.guilty, name="gulty"),
+    path("guilty/", views.guilty, name="guilty"),
     path("askTalkPerso/<int:pk>", views.askTalkPerso, name="askTalkPerso"),
     path("joinAskTalkPerso/<int:pk>", views.joinAskTalkPerso, name="joinAskTalkPerso"),
+    path("send_message/", views.send_message, name="send_message"),
+    path("clash/", views.clash, name="clash"),
+    path("accept_clash/<int:pk>", views.accept_clash, name="accept_clash"),
+    path("cancel_clash/<int:pk>", views.cancel_clash, name="cancel_clash"),
+    path("refuse_clash/<int:pk>", views.refuse_clash, name="refuse_clash"),
+    path("logout/", views.logout_request, name="logout"),
+    path("history/", views.history, name="history"),
+    path("all/", views.all, name="all"),
+    path("select_perso/<int:pk>", views.select_perso, name="select_perso"),
+
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <h4>L'historique des Clash</h4>
+        <div class="col s12 m4">
+            {% for guilty in history %}
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <img src="/media/{{ guilty.perso_ask.image }}" alt="">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            {% if guilty.perso.user == request.user %}
+                                <p>Vous voulez soutirer des info à <br>
+                                    {{ guilty.perso_ask.name }}
+                                </p>
+                            {% elif guilty.perso_ask.user == request.user %}
+                                <p>{{ guilty.perso.name }} veut vous soutirer des info <br>
+
+                                </p>
+                            {% else %}
+                                <p>{{ guilty.perso.name }} veut soutirer des info à <br>
+                                    {{ guilty.perso_ask.name }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% if guilty.join_perso.user == request.user %}
+                        <div class="card-action">
+                            <p>Vous avez demander de participation à ce clash</p>
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col s12 m4">
+            {% for guilty in clash %}
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <img src="/media/{{ guilty.join_perso.image }}" alt="">
+                        <img src="/media/{{ guilty.perso_ask.image }}" alt="">
+                        <img src="/media/{{ guilty.perso.image }}" alt="">
+
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            {% if guilty.perso.user == request.user and guilty.join_perso %}
+                                <p>Vous voulez soutirer des info à <br>
+                                    {{ guilty.perso_ask.name }} <br>
+                                    et {{ guilty.join_perso.name }} veut vous aider
+                                </p>
+                            {% elif guilty.perso.user == request.user and guilty.join_perso == None %}
+                                <p>Vous voulez soutirer des info à <br>
+                                    {{ guilty.perso_ask.name }} <br>
+                                    trouve un alliez pour vous aider
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-action">
+                            {% if guilty.perso.user == request.user and guilty.join_perso %}
+                                <form method="post" action="/accept_clash/{{ guilty.id }}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-info" type="submit">Accepter</button>
+                                </form>
+                                                                <br/>
+                                <form method="post" action="/refuse_clash/{{ guilty.id }}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-info red" type="submit">Refuser</button>
+                                </form>
+                                <br/>
+                                <form method="post" action="/cancel_clash/{{ guilty.id }}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-info red" type="submit">Annuler le clash</button>
+                                </form>
+                            {% elif guilty.perso.user == request.user and guilty.join_perso == None %}
+                                <form method="post" action="/cancel_clash/{{ guilty.id }}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-info red" type="submit">Annuler le clash</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
