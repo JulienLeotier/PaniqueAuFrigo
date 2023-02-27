@@ -30,7 +30,6 @@ class WsConsumers(WebsocketConsumer):
             self.channel_name,
         )
 
-
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.perso_group_name,

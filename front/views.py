@@ -86,7 +86,7 @@ def saveAskPerso(request, perso_ask, pk):
     instance = AskTalkPerso.objects.get(id=pk)
     user_join = instance.join_perso.user
     user_ask = instance.user
-    perso_join = Perso.objects.get(user=user_ask)
+    perso_join = Perso.objects.get(user=user_join)
     custom_save(talk_perso, perso_join)
     instance.delete()
     save_ask_join = SaveAsk.objects.get_or_create(user=user_join)
