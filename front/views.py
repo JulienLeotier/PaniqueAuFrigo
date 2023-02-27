@@ -275,7 +275,7 @@ def all(request):
         perso = Perso.objects.all().exclude(user=request.user)
         save_ask = SaveAsk.objects.get_or_create(user=request.user)
 
-        return render(request=request, template_name="perso/all.html", context={"save_ask": save_ask[0], "persos": perso})
+        return render(request=request, template_name="perso/all.html", context={"save_ask": save_ask[0], "persos": perso, "perso": perso})
     else:
         return redirect('/')
 
